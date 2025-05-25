@@ -1,0 +1,325 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <!-- Hero Section -->
+    <div class="gradient-bg text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                Bienvenue dans GuideSmart
+            </h1>
+            <p class="text-xl md:text-2xl mb-2 opacity-90">
+                Travel Paradise - Administration
+            </p>
+            <p class="text-lg opacity-80 max-w-2xl mx-auto">
+                Gérez efficacement vos guides touristiques, organisez vos visites et optimisez l'expérience de vos clients
+            </p>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="container mx-auto px-4 -mt-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-brand-green">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-medium">Guides Actifs</p>
+                        <p class="text-3xl font-bold text-gray-800">{{ guides_actifs ?? 24 }}</p>
+                    </div>
+                    <div class="bg-brand-green bg-opacity-10 p-3 rounded-full">
+                        <svg class="w-8 h-8 text-brand-green" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-brand-orange">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-medium">Visites ce mois</p>
+                        <p class="text-3xl font-bold text-gray-800">{{ visites_mois ?? 156 }}</p>
+                    </div>
+                    <div class="bg-brand-orange bg-opacity-10 p-3 rounded-full">
+                        <svg class="w-8 h-8 text-brand-orange" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-medium">Taux de présence</p>
+                        <p class="text-3xl font-bold text-gray-800">{{ taux_presence ?? 87 }}%</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-medium">Visiteurs totaux</p>
+                        <p class="text-3xl font-bold text-gray-800">{{ visiteurs_total ?? 1847 }}</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                Gestion du système
+            </h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                Utilisez les modules ci-dessous pour gérer efficacement votre agence de voyage
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Gestion des Guides -->
+            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
+                <div class="gradient-bg p-6 text-white">
+                    <div class="flex items-center justify-center w-16 h-16 bg-white bg-opacity-20 rounded-full mx-auto mb-4">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-center">Gestion des Guides</h3>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 mb-6 text-center">
+                        Ajoutez, modifiez et gérez vos guides touristiques
+                    </p>
+                    <div class="space-y-2 text-sm text-gray-500 mb-6">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-brand-green" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Profils complets
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-brand-green" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Affectation par pays
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-brand-green" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Statuts actif/inactif
+                        </div>
+                    </div>
+                    <a href="#" class="block w-full text-center bg-brand-green text-white py-3 rounded-lg hover:bg-opacity-90 transition-colors font-medium group-hover:bg-brand-orange">
+                        Accéder →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Gestion des Visites -->
+            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
+                <div class="bg-brand-orange p-6 text-white">
+                    <div class="flex items-center justify-center w-16 h-16 bg-white bg-opacity-20 rounded-full mx-auto mb-4">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 102 0V3h4v1a1 1 0 102 0V3a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm8 8a1 1 0 100-2 1 1 0 000 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-center">Gestion des Visites</h3>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 mb-6 text-center">
+                        Organisez et planifiez toutes vos visites touristiques
+                    </p>
+                    <div class="space-y-2 text-sm text-gray-500 mb-6">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-brand-orange" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Planning détaillé
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-brand-orange" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Affectation guides
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-brand-orange" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Gestion visiteurs
+                        </div>
+                    </div>
+                    <a href="#" class="block w-full text-center bg-brand-orange text-white py-3 rounded-lg hover:bg-opacity-90 transition-colors font-medium group-hover:bg-brand-green">
+                        Accéder →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Statistiques -->
+            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
+                <div class="bg-blue-600 p-6 text-white">
+                    <div class="flex items-center justify-center w-16 h-16 bg-white bg-opacity-20 rounded-full mx-auto mb-4">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-center">Statistiques</h3>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 mb-6 text-center">
+                        Analysez les performances de votre agence
+                    </p>
+                    <div class="space-y-2 text-sm text-gray-500 mb-6">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Visites par mois
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Performance guides
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Taux de présence
+                        </div>
+                    </div>
+                    <a href="#" class="block w-full text-center bg-blue-600 text-white py-3 rounded-lg hover:bg-opacity-90 transition-colors font-medium group-hover:bg-brand-green">
+                        Accéder →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Gestion des Utilisateurs -->
+            {% if is_granted('ROLE_ADMIN') %}
+            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
+                <div class="bg-purple-600 p-6 text-white">
+                    <div class="flex items-center justify-center w-16 h-16 bg-white bg-opacity-20 rounded-full mx-auto mb-4">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-center">Gestion Utilisateurs</h3>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 mb-6 text-center">
+                        Gérez les comptes et permissions utilisateurs
+                    </p>
+                    <div class="space-y-2 text-sm text-gray-500 mb-6">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Comptes utilisateurs
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Rôles et permissions
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Administration
+                        </div>
+                    </div>
+                    <a href="#" class="block w-full text-center bg-purple-600 text-white py-3 rounded-lg hover:bg-opacity-90 transition-colors font-medium group-hover:bg-brand-green">
+                        Accéder →
+                    </a>
+                </div>
+            </div>
+            {% else %}
+            <!-- Card de remplacement quand pas admin -->
+            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
+                <div class="bg-green-600 p-6 text-white">
+                    <div class="flex items-center justify-center w-16 h-16 bg-white bg-opacity-20 rounded-full mx-auto mb-4">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-center">Recherche Avancée</h3>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-600 mb-6 text-center">
+                        Recherchez rapidement guides et visites
+                    </p>
+                    <div class="space-y-2 text-sm text-gray-500 mb-6">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Filtres avancés
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Recherche globale
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Export données
+                        </div>
+                    </div>
+                    <button onclick="alert('Fonctionnalité à venir')" class="block w-full text-center bg-green-600 text-white py-3 rounded-lg hover:bg-opacity-90 transition-colors font-medium group-hover:bg-brand-green">
+                        Bientôt →
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Recent Activity (si des données sont disponibles) -->
+    {% if recent_activities is defined and recent_activities %}
+    <div class="bg-white py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-gray-800 text-center mb-12">
+                Activité récente
+            </h2>
+            <div class="max-w-4xl mx-auto">
+                {% for activity in recent_activities|slice(0, 5) %}
+                <div class="flex items-center p-4 border-b border-gray-200 last:border-b-0">
+                    <div class="flex-shrink-0 w-10 h-10 bg-brand-green bg-opacity-10 rounded-full flex items-center justify-center mr-4">
+                        <svg class="w-5 h-5 text-brand-green" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-grow">
+                        <p class="text-gray-800 font-medium">{{ activity.description }}</p>
+                        <p class="text-gray-500 text-sm">{{ activity.created_at|date('d/m/Y à H:i') }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

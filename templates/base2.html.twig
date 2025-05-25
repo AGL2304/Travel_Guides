@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}GuideSmart - Travel & Tourism{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🌍</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-green': '#007C3E',
+                        'brand-orange': '#F68B1F',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #007C3E 0%, #F68B1F 100%);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #007C3E 0%, #F68B1F 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+    
+    {% block stylesheets %}
+    {% endblock %}
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="gradient-bg shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6 text-brand-green" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-white text-xl font-bold">
+                            <a href="#" class="hover:text-gray-200 transition-colors">
+                                GuideSmart
+                            </a>
+                        </h1>
+                        <p class="text-white text-xs opacity-90">Travel & Tourism</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 border-t border-white border-opacity-20">
+                <nav class="flex flex-col space-y-2 mt-4">
+                    <a href="#" class="text-white hover:text-gray-200 transition-colors py-2">
+                        Tableau de bord
+                    </a>
+                    <a href="#" class="text-white hover:text-gray-200 transition-colors py-2">
+                        Guides
+                    </a>
+                    <a href="#" class="text-white hover:text-gray-200 transition-colors py-2">
+                        Visites
+                    </a>
+                    <a href="#" class="text-white hover:text-gray-200 transition-colors py-2">
+                        Statistiques
+                    </a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <a href="#" class="text-white hover:text-gray-200 transition-colors py-2">
+                        Utilisateurs
+                    </a>
+                    {% endif %}
+                    
+                    {% if app.user %}
+                        <div class="border-t border-white border-opacity-20 pt-4 mt-4">
+                            <p class="text-white text-sm mb-2">
+                                #
+                            </p>
+                            <a href="#" class="inline-block bg-white text-brand-green px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium">
+                                Déconnexion
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="border-t border-white border-opacity-20 pt-4 mt-4">
+                            <a href="#" class="inline-block bg-white text-brand-green px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium">
+                                Connexion
+                            </a>
+                        </div>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Flash Messages -->
+    {% for type, messages in app.flashes %}
+        <div class="container mx-auto px-4 py-2">
+            {% for message in messages %}
+                <div class="alert alert-{{ type }} bg-{{ type == 'error' ? 'red' : (type == 'success' ? 'green' : 'blue') }}-100 border border-{{ type == 'error' ? 'red' : (type == 'success' ? 'green' : 'blue') }}-400 text-{{ type == 'error' ? 'red' : (type == 'success' ? 'green' : 'blue') }}-700 px-4 py-3 rounded mb-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        {% block body %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Logo et description -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-brand-green" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">GuideSmart</h3>
+                            <p class="text-sm text-gray-400">Travel & Tourism</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Solution complète de gestion pour guides touristiques. 
+                        Simplifiez l'organisation de vos visites et optimisez 
+                        l'expérience de vos clients avec TravelParadise.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+</body>
+</html>

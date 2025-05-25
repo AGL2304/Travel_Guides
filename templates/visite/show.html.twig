@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Visite{% endblock %}
+
+{% block body %}
+    <h1>Visite</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ visite.id }}</td>
+            </tr>
+            <tr>
+                <th>Photo</th>
+                <td>{{ visite.photo }}</td>
+            </tr>
+            <tr>
+                <th>Pays</th>
+                <td>{{ visite.pays }}</td>
+            </tr>
+            <tr>
+                <th>Lieu</th>
+                <td>{{ visite.lieu }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ visite.date ? visite.date|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>HeureDebut</th>
+                <td>{{ visite.heureDebut ? visite.heureDebut|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Duree</th>
+                <td>{{ visite.duree }}</td>
+            </tr>
+            <tr>
+                <th>HeureFin</th>
+                <td>{{ visite.heureFin ? visite.heureFin|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CommentaireGeneral</th>
+                <td>{{ visite.commentaireGeneral }}</td>
+            </tr>
+            <tr>
+                <th>Visite</th>
+                <td>{{ visite.visite }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_visite_index') }}">back to list</a>
+
+    <a href="{{ path('app_visite_edit', {'id': visite.id}) }}">edit</a>
+
+    {{ include('visite/_delete_form.html.twig') }}
+{% endblock %}
