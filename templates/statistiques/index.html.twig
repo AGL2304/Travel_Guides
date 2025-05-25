@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h2>📊 Statistiques</h2>
+
+<h3>Nombre de visites par mois</h3>
+<ul>
+    {% for stat in visitesParMois %}
+        <li>{{ stat.mois }} : {{ stat.total }} visites</li>
+    {% endfor %}
+</ul>
+
+<h3>Nombre de visites par guide et par mois</h3>
+<ul>
+    {% for stat in visitesParGuide %}
+        <li>{{ stat.guide }} - {{ stat.mois }} : {{ stat.total }} visites</li>
+    {% endfor %}
+</ul>
+
+<h3>Taux de présence des touristes par mois</h3>
+<ul>
+    {% for stat in tauxPresence %}
+        <li>{{ stat.mois }} : {{ (stat.taux * 100)|number_format(2) }}%</li>
+    {% endfor %}
+</ul>
+{% endblock %}
