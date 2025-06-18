@@ -1,45 +1,87 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Guide index{% endblock %}
+{% block title %}Liste des Guides - GuideSmart{% endblock %}
 
 {% block body %}
-    <h1>Guide index</h1>
+<div class="container mx-auto px-4 py-8">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Firstname</th>
-                <th>Statut</th>
-                <th>Pays</th>
-                <th>Photo</th>
-                <th>OneToMany</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for guide in guides %}
-            <tr>
-                <td>{{ guide.id }}</td>
-                <td>{{ guide.name }}</td>
-                <td>{{ guide.firstname }}</td>
-                <td>{{ guide.statut }}</td>
-                <td>{{ guide.pays }}</td>
-                <td>{{ guide.photo }}</td>
-                <td>{{ guide.OneToMany }}</td>
-                <td>
-                    <a href="{{ path('app_guide_show', {'id': guide.id}) }}">show</a>
-                    <a href="{{ path('app_guide_edit', {'id': guide.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {# En-tête de la page avec titre et bouton d'action #}
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold gradient-text">
+            Liste des Guides
+        </h1>
+        <a href="{{ path('app_guide_new') }}" class="inline-flex items-center bg-brand-green text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors shadow font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Nouveau Guide
+        </a>
+    </div>
 
-    <a href="{{ path('app_guide_new') }}">Create new</a>
+    {# Conteneur de la table avec un style de "carte" #}
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                <tr>
+                    {# J'ai renommé les colonnes pour plus de clarté #}
+                    <th scope="col" class="px-6 py-3">Photo</th>
+                    <th scope="col" class="px-6 py-3">Nom Complet</th>
+                    <th scope="col" class="px-6 py-3">Statut</th>
+                    <th scope="col" class="px-6 py-3">Pays</th>
+                    <th scope="col" class="px-6 py-3">Visites Assignées</th>
+                    <th scope="col" class="px-6 py-3 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for guide in guides %}
+                <tr class="bg-white border-b hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4">
+                        {# Affiche une image si une photo est définie, sinon un avatar par défaut #}
+                        {% if guide.photo %}
+                            <img src="{{ asset('uploads/photos/' ~ guide.photo) }}" alt="Photo de {{ guide.firstname }}" class="w-12 h-12 rounded-full object-cover">
+                        {% else %}
+                            <span class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-gray-200">
+                                <span class="text-lg font-medium text-gray-600">{{ guide.firstname|first|upper }}{{ guide.name|first|upper }}</span>
+                            </span>
+                        {% endif %}
+                    </td>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        {{ guide.firstname }} {{ guide.name }}
+                        <div class="text-xs text-gray-400">ID: {{ guide.id }}</div>
+                    </th>
+                    <td class="px-6 py-4">
+                        {# Affichage du statut sous forme de badge coloré pour une meilleure lisibilité #}
+                        {% set status_class = guide.statut == 'Actif' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' %}
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-medium {{ status_class }}">
+                            {{ guide.statut }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ guide.pays }}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        {# "OneToMany" est un nom technique. On affiche plutôt un compte. #}
+                        {# S'il s'agit d'une collection de visites, on peut afficher son nombre. #}
+                        <span class="font-bold text-lg text-brand-orange">{{ guide.oneToMany|length }}</span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <a href="{{ path('app_guide_show', {'id': guide.id}) }}" class="font-medium text-brand-green hover:underline mr-4">Voir</a>
+                        <a href="{{ path('app_guide_edit', {'id': guide.id}) }}" class="font-medium text-brand-orange hover:underline">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-gray-500 py-10">
+                        <p class="mb-2">Aucun guide n'a été trouvé.</p>
+                        <a href="{{ path('app_guide_new') }}" class="font-medium text-brand-green hover:underline">
+                            Cliquez ici pour en créer un premier !
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
 {% endblock %}

@@ -45,9 +45,9 @@ class Visite
     private ?Guide $guide = null;
 
     /**
-     * @var Collection<int, visiteur>
+     * @var Collection<int, Visiteur>
      */
-    #[ORM\OneToMany(targetEntity: visiteur::class, mappedBy: 'visite')]
+    #[ORM\OneToMany(targetEntity: Visiteur::class, mappedBy: 'visite')]
     private Collection $visiteurs;
 
     #[ORM\Column(length: 255)]
@@ -172,14 +172,14 @@ class Visite
     }
 
     /**
-     * @return Collection<int, visiteur>
+     * @return Collection<int, Visiteur>
      */
     public function getVisiteurs(): Collection
     {
         return $this->visiteurs;
     }
 
-    public function addVisiteur(visiteur $visiteur): static
+    public function addVisiteur(Visiteur $visiteur): static
     {
         if (!$this->visiteurs->contains($visiteur)) {
             $this->visiteurs->add($visiteur);
@@ -189,7 +189,7 @@ class Visite
         return $this;
     }
 
-    public function removeVisiteur(visiteur $visiteur): static
+    public function removeVisiteur(Visiteur $visiteur): static
     {
         if ($this->visiteurs->removeElement($visiteur)) {
             // set the owning side to null (unless already changed)

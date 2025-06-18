@@ -34,9 +34,9 @@ class Guide
     private ?string $OneToMany = null;
 
     /**
-     * @var Collection<int, visite>
+     * @var Collection<int, Visite>
      */
-    #[ORM\OneToMany(targetEntity: visite::class, mappedBy: 'guide', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Visite::class, mappedBy: 'guide', orphanRemoval: true)]
     private Collection $visite;
 
     public function __construct()
@@ -122,14 +122,14 @@ class Guide
     }
 
     /**
-     * @return Collection<int, visite>
+     * @return Collection<int, Visite>
      */
     public function getVisite(): Collection
     {
         return $this->visite;
     }
 
-    public function addVisite(visite $visite): static
+    public function addVisite(Visite $visite): static
     {
         if (!$this->visite->contains($visite)) {
             $this->visite->add($visite);
@@ -139,7 +139,7 @@ class Guide
         return $this;
     }
 
-    public function removeVisite(visite $visite): static
+    public function removeVisite(Visite $visite): static
     {
         if ($this->visite->removeElement($visite)) {
             // set the owning side to null (unless already changed)

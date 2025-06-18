@@ -1,4 +1,58 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{# On présume que le formulaire par défaut de Symfony n'est pas stylisé avec Tailwind. #}
+{# Cette version utilise les classes Tailwind pour un rendu optimal. #}
+
+{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+
+{# Un titre pour le formulaire, passé depuis new.html.twig #}
+<h2 class="text-xl font-semibold text-gray-700 border-b pb-3 mb-6">{{ form_title|default('Formulaire') }}</h2>
+
+{# Utilisation d'une grille pour mieux organiser les champs "Nom" et "Prénom" #}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+        {{ form_label(form.name, 'Nom', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+        {{ form_widget(form.name, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5'}}) }}
+        {{ form_errors(form.name) }}
+    </div>
+    <div>
+        {{ form_label(form.firstname, 'Prénom', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+        {{ form_widget(form.firstname, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5'}}) }}
+        {{ form_errors(form.firstname) }}
+    </div>
+</div>
+
+{# Champs sur une seule colonne #}
+<div>
+    {{ form_label(form.pays, 'Pays', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+    {{ form_widget(form.pays, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5'}}) }}
+    {{ form_errors(form.pays) }}
+</div>
+
+{# Champ pour le statut (probablement un <select>) #}
+<div>
+    {{ form_label(form.statut, 'Statut', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+    {{ form_widget(form.statut, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5'}}) }}
+    {{ form_errors(form.statut) }}
+</div>
+
+{# Champ pour l'upload de photo #}
+<div>
+    {{ form_label(form.photo, 'Photo de profil', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+    {{ form_widget(form.photo, {'attr': {'class': 'block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none'}}) }}
+    <p class="mt-1 text-xs text-gray-500" id="file_input_help">PNG, JPG ou GIF (MAX. 2MB).</p>
+    {{ form_errors(form.photo) }}
+</div>
+
+{# Actions du formulaire (bouton de soumission et lien d'annulation/retour) #}
+<div class="flex items-center justify-end pt-4 border-t mt-6 space-x-4">
+    <a href="{{ path('app_guide_index') }}" class="text-sm font-medium text-gray-600 hover:underline">
+        Annuler
+    </a>
+    <button type="submit" class="inline-flex items-center bg-brand-green text-white px-5 py-2.5 rounded-lg hover:bg-green-700 transition-colors shadow font-medium focus:ring-4 focus:outline-none focus:ring-green-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M7.5 2.5a.5.5 0 00-1 0v4.586l-1.707-1.707a.5.5 0 00-.708.708l2.5 2.5a.5.5 0 00.708 0l2.5-2.5a.5.5 0 00-.708-.708L8.5 7.086V2.5zM10 2a8 8 0 100 16 8 8 0 000-16zM3.5 10a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z" />
+        </svg>
+        {{ button_label|default('Enregistrer') }}
+    </button>
+</div>
+
 {{ form_end(form) }}

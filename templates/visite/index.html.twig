@@ -1,51 +1,120 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Visite index{% endblock %}
+{% block title %}Liste des Visites - GuideSmart{% endblock %}
 
 {% block body %}
-    <h1>Visite index</h1>
+<div class="container mx-auto px-4 py-8">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Photo</th>
-                <th>Pays</th>
-                <th>Lieu</th>
-                <th>Date</th>
-                <th>HeureDebut</th>
-                <th>Duree</th>
-                <th>HeureFin</th>
-                <th>CommentaireGeneral</th>
-                <th>Visite</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for visite in visites %}
-            <tr>
-                <td>{{ visite.id }}</td>
-                <td>{{ visite.photo }}</td>
-                <td>{{ visite.pays }}</td>
-                <td>{{ visite.lieu }}</td>
-                <td>{{ visite.date ? visite.date|date('Y-m-d') : '' }}</td>
-                <td>{{ visite.heureDebut ? visite.heureDebut|date('H:i:s') : '' }}</td>
-                <td>{{ visite.duree }}</td>
-                <td>{{ visite.heureFin ? visite.heureFin|date('H:i:s') : '' }}</td>
-                <td>{{ visite.commentaireGeneral }}</td>
-                <td>{{ visite.visite }}</td>
-                <td>
-                    <a href="{{ path('app_visite_show', {'id': visite.id}) }}">show</a>
-                    <a href="{{ path('app_visite_edit', {'id': visite.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="11">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {# En-tête de la page avec titre et bouton d'action #}
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold gradient-text">
+            Liste des Visites
+        </h1>
+        <a href="{{ path('app_visite_new') }}" class="inline-flex items-center bg-brand-green text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors shadow font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Nouvelle Visite
+        </a>
+    </div>
 
-    <a href="{{ path('app_visite_new') }}">Create new</a>
+    {# Conteneur de la table avec un style de "carte" #}
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                <tr>
+                    {# J'ai drastiquement réduit et renommé les colonnes pour la clarté #}
+                    <th scope="col" class="px-6 py-3">Visite & Lieu</th>
+                    <th scope="col" class="px-6 py-3">Guide Assigné</th>
+                    <th scope="col" class="px-6 py-3">Date & Heure</th>
+                    <th scope="col" class="px-6 py-3">Statut</th>
+                    <th scope="col" class="px-6 py-3 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for visite in visites %}
+                <tr class="bg-white border-b hover:bg-gray-50 transition-colors">
+                    
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap flex items-center space-x-4">
+                        {# Affiche une image si une photo est définie, sinon un avatar par défaut #}
+                        {% if visite.photo %}
+                            <img src="{{ asset('uploads/visites/' ~ visite.photo) }}" alt="Photo de {{ visite.name|default('Visite') }}" class="w-12 h-12 rounded-lg object-cover flex-shrink-0">
+                        {% else %}
+                            <span class="flex-shrink-0 inline-flex items-center justify-center h-12 w-12 rounded-lg bg-gray-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </span>
+                        {% endif %}
+                        <div>
+                            {# J'ai supposé que 'visite.visite' était le nom/titre de la visite. Adaptez si besoin. #}
+                            <div class="font-bold">{{ visite.visite|default('Visite #' ~ visite.id) }}</div>
+                            <div class="text-xs text-gray-500">{{ visite.lieu }}, {{ visite.pays }}</div>
+                        </div>
+                    </th>
+
+                    <td class="px-6 py-4">
+                        {# Affiche le nom du guide assigné, si il y en a un #}
+                        {# J'ai supposé une relation `visite.guide`. Adaptez si le nom est différent. #}
+                        {% if visite.guide %}
+                            <a href="{{ path('app_guide_show', {'id': visite.guide.id}) }}" class="hover:underline text-brand-green">
+                                {{ visite.guide.firstname }} {{ visite.guide.name }}
+                            </a>
+                        {% else %}
+                            <span class="text-gray-400 italic">Non assigné</span>
+                        {% endif %}
+                    </td>
+                    
+                    <td class="px-6 py-4">
+                        {# Affichage groupé et formaté de la date et de l'heure #}
+                        {% if visite.date %}
+                            <div>{{ visite.date|date('d M Y') }}</div>
+                            <div class="text-gray-500 text-xs">
+                                {{ visite.heureDebut|date('H:i') }} (Durée: {{ visite.duree }}h)
+                            </div>
+                        {% else %}
+                            <span class="text-gray-400 italic">Non planifiée</span>
+                        {% endif %}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        {# Statut dynamique basé sur la date pour une meilleure lisibilité #}
+                        {% set status_text = 'À définir' %}
+                        {% set status_class = 'bg-gray-100 text-gray-800' %}
+                        {% if visite.date %}
+                            {% set visit_datetime = (visite.date|date('Y-m-d') ~ ' ' ~ visite.heureDebut|date('H:i:s'))|date('U') %}
+                            {% if visit_datetime > "now"|date('U') %}
+                                {% set status_text = 'À venir' %}
+                                {% set status_class = 'bg-blue-100 text-blue-800' %}
+                            {% else %}
+                                {% set status_text = 'Terminée' %}
+                                {% set status_class = 'bg-green-100 text-green-800' %}
+                            {% endif %}
+                        {% endif %}
+                        {# Ajouter une condition pour un statut 'Annulée' si votre entité le gère #}
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-medium {{ status_class }}">
+                            {{ status_text }}
+                        </span>
+                    </td>
+
+                    <td class="px-6 py-4 text-right">
+                        <a href="{{ path('app_visite_show', {'id': visite.id}) }}" class="font-medium text-brand-green hover:underline mr-4">Voir</a>
+                        <a href="{{ path('app_visite_edit', {'id': visite.id}) }}" class="font-medium text-brand-orange hover:underline">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-gray-500 py-10">
+                        <p class="mb-2">Aucune visite n'a été trouvée.</p>
+                        <a href="{{ path('app_visite_new') }}" class="font-medium text-brand-green hover:underline">
+                            Cliquez ici pour planifier une première visite !
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
 {% endblock %}

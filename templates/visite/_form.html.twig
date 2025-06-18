@@ -1,4 +1,84 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{# Ce template stylise chaque champ du formulaire Visite avec Tailwind CSS. #}
+
+{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+
+<h2 class="text-xl font-semibold text-gray-700 border-b pb-3 mb-6">{{ form_title|default('Formulaire') }}</h2>
+
+{# Champ Titre de la visite (supposant que 'visite.visite' est le nom/titre) #}
+<div>
+    {{ form_label(form.visite, 'Titre de la visite', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+    {{ form_widget(form.visite, {'attr': {'placeholder': 'Ex: Tour du centre historique', 'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5'}}) }}
+    {{ form_errors(form.visite) }}
+</div>
+
+{# Grille pour le lieu et le pays #}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+        {{ form_label(form.lieu, 'Lieu ou point de rencontre', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+        {{ form_widget(form.lieu, {'attr': {'placeholder': 'Ex: Place de la Cathédrale', 'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5'}}) }}
+        {{ form_errors(form.lieu) }}
+    </div>
+    <div>
+        {{ form_label(form.pays, 'Pays', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+        {{ form_widget(form.pays, {'attr': {'placeholder': 'Ex: France', 'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5'}}) }}
+        {{ form_errors(form.pays) }}
+    </div>
+</div>
+
+{# Grille pour la planification (Date, Heure, Durée) #}
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div>
+        {{ form_label(form.date, 'Date', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+        {{ form_widget(form.date, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5'}}) }}
+        {{ form_errors(form.date) }}
+    </div>
+    <div>
+        {{ form_label(form.heureDebut, 'Heure de début', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+        {{ form_widget(form.heureDebut, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5'}}) }}
+        {{ form_errors(form.heureDebut) }}
+    </div>
+    <div>
+        {{ form_label(form.duree, 'Durée (en heures)', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+        {{ form_widget(form.duree, {'attr': {'placeholder': 'Ex: 2.5', 'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5'}}) }}
+        {{ form_errors(form.duree) }}
+    </div>
+</div>
+
+{# Champ pour assigner un guide (supposant une relation 'guide' dans l'entité Visite) #}
+{% if form.guide is defined %}
+<div>
+    {{ form_label(form.guide, 'Assigner un guide', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+    {{ form_widget(form.guide, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5'}}) }}
+    {{ form_errors(form.guide) }}
+</div>
+{% endif %}
+
+{# Champ pour l'upload de photo #}
+<div>
+    {{ form_label(form.photo, 'Photo de la visite', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+    {{ form_widget(form.photo, {'attr': {'class': 'block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none'}}) }}
+    <p class="mt-1 text-xs text-gray-500">PNG, JPG ou GIF (MAX. 2MB). Image représentative du lieu.</p>
+    {{ form_errors(form.photo) }}
+</div>
+
+{# Champ pour le commentaire #}
+<div>
+    {{ form_label(form.commentaireGeneral, 'Commentaire / Notes', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+    {{ form_widget(form.commentaireGeneral, {'attr': {'rows': 4, 'placeholder': 'Informations importantes pour le guide ou les participants...', 'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5'}}) }}
+    {{ form_errors(form.commentaireGeneral) }}
+</div>
+
+{# Actions du formulaire (bouton de soumission et lien d'annulation/retour) #}
+<div class="flex items-center justify-end pt-4 border-t mt-6 space-x-4">
+    <a href="{{ path('app_visite_index') }}" class="text-sm font-medium text-gray-600 hover:underline">
+        Annuler
+    </a>
+    <button type="submit" class="inline-flex items-center bg-brand-green text-white px-5 py-2.5 rounded-lg hover:bg-green-700 transition-colors shadow font-medium focus:ring-4 focus:outline-none focus:ring-green-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 -ml-1 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        {{ button_label|default('Enregistrer') }}
+    </button>
+</div>
+
 {{ form_end(form) }}

@@ -1,11 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Visite{% endblock %}
+{% block title %}Planifier une nouvelle Visite{% endblock %}
 
 {% block body %}
-    <h1>Create new Visite</h1>
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
 
-    {{ include('visite/_form.html.twig') }}
+        {# En-tête de la page #}
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-3xl font-bold gradient-text">
+                Nouvelle Visite
+            </h1>
+            <a href="{{ path('app_visite_index') }}" class="text-sm font-medium text-gray-600 hover:text-brand-green transition-colors flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Retour à la liste des visites
+            </a>
+        </div>
 
-    <a href="{{ path('app_visite_index') }}">back to list</a>
+        {# Conteneur du formulaire avec un style de "carte" #}
+        <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+            {{ include('visite/_form.html.twig', {
+                'button_label': 'Planifier la visite',
+                'form_title': 'Détails de la visite'
+            }) }}
+        </div>
+
+    </div>
+</div>
 {% endblock %}

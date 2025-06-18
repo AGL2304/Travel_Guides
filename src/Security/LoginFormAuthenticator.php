@@ -28,6 +28,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
+        // La méthode getPayload() est la plus moderne pour récupérer les données POST.
         $email = $request->getPayload()->getString('email');
 
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
@@ -44,13 +45,16 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        // Gère le cas où l'utilisateur voulait accéder à une page protégée avant d'être redirigé vers le login
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
-        // For example:
-        // return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        // ========================================================
+        // CORRECTION PRINCIPALE : Remplacer l'exception par cette ligne
+        // ========================================================
+        // Redirige l'utilisateur vers la route 'app_dashboard' par défaut après la connexion
+        return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
 
     protected function getLoginUrl(Request $request): string

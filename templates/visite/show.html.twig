@@ -1,58 +1,145 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Visite{% endblock %}
+{% block title %}Détails de la Visite : {{ visite.visite|default('Visite #' ~ visite.id) }}{% endblock %}
 
 {% block body %}
-    <h1>Visite</h1>
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-5xl mx-auto">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ visite.id }}</td>
-            </tr>
-            <tr>
-                <th>Photo</th>
-                <td>{{ visite.photo }}</td>
-            </tr>
-            <tr>
-                <th>Pays</th>
-                <td>{{ visite.pays }}</td>
-            </tr>
-            <tr>
-                <th>Lieu</th>
-                <td>{{ visite.lieu }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ visite.date ? visite.date|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>HeureDebut</th>
-                <td>{{ visite.heureDebut ? visite.heureDebut|date('H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Duree</th>
-                <td>{{ visite.duree }}</td>
-            </tr>
-            <tr>
-                <th>HeureFin</th>
-                <td>{{ visite.heureFin ? visite.heureFin|date('H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>CommentaireGeneral</th>
-                <td>{{ visite.commentaireGeneral }}</td>
-            </tr>
-            <tr>
-                <th>Visite</th>
-                <td>{{ visite.visite }}</td>
-            </tr>
-        </tbody>
-    </table>
+        {# Lien de retour à la liste, placé au-dessus de la carte principale #}
+        <div class="mb-4">
+            <a href="{{ path('app_visite_index') }}" class="text-sm font-medium text-gray-600 hover:text-brand-green transition-colors flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Retour à la liste des visites
+            </a>
+        </div>
 
-    <a href="{{ path('app_visite_index') }}">back to list</a>
+        {# La carte principale avec en-tête #}
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="p-6 border-b">
+                <h1 class="text-3xl font-bold text-gray-800">
+                    {{ visite.visite|default('Visite #' ~ visite.id) }}
+                </h1>
+                <p class="text-md text-gray-500 flex items-center mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                    </svg>
+                    {{ visite.lieu }}, {{ visite.pays }}
+                </p>
+            </div>
 
-    <a href="{{ path('app_visite_edit', {'id': visite.id}) }}">edit</a>
+            {# Corps de la page en deux colonnes #}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 p-6">
 
-    {{ include('visite/_delete_form.html.twig') }}
+                {# Colonne de gauche : Photo et Guide #}
+                <div class="md:col-span-1 space-y-6">
+                    {# Photo de la visite #}
+                    <div>
+                        <h3 class="font-semibold text-gray-700 mb-2">Aperçu</h3>
+                        {% if visite.photo %}
+                            <img src="{{ asset('uploads/visites/' ~ visite.photo) }}" alt="Photo de la visite" class="w-full h-auto rounded-lg object-cover shadow-sm">
+                        {% else %}
+                            <div class="w-full h-48 rounded-lg bg-gray-200 flex items-center justify-center">
+                                <span class="text-gray-500">Aucune photo</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    {# Carte du guide assigné #}
+                    {% if visite.guide %}
+                    <div>
+                        <h3 class="font-semibold text-gray-700 mb-2">Guide Assigné</h3>
+                        <a href="{{ path('app_guide_show', {'id': visite.guide.id}) }}" class="block p-4 bg-gray-50 rounded-lg border hover:bg-gray-100 hover:border-brand-green transition-all">
+                            <div class="flex items-center space-x-4">
+                                {% if visite.guide.photo %}
+                                    <img src="{{ asset('uploads/photos/' ~ visite.guide.photo) }}" class="w-12 h-12 rounded-full object-cover">
+                                {% else %}
+                                    <span class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-gray-300">
+                                        <span class="font-medium text-gray-600">{{ visite.guide.firstname|first|upper }}{{ visite.guide.name|first|upper }}</span>
+                                    </span>
+                                {% endif %}
+                                <div>
+                                    <p class="font-bold text-gray-800">{{ visite.guide.firstname }} {{ visite.guide.name }}</p>
+                                    <p class="text-sm text-gray-500">Statut : {{ visite.guide.statut }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {# Colonne de droite : Détails de la visite #}
+                <div class="md:col-span-2">
+                    <h3 class="font-semibold text-gray-700 mb-2">Détails de la planification</h3>
+                    <dl class="divide-y divide-gray-200 border rounded-lg">
+                        <div class="px-4 py-3 grid grid-cols-3 gap-4">
+                            <dt class="text-sm font-medium text-gray-500">Date</dt>
+                            <dd class="mt-1 text-sm text-gray-900 col-span-2 font-semibold">{{ visite.date ? visite.date|date('l d F Y') : 'Non définie' }}</dd>
+                        </div>
+                        <div class="px-4 py-3 grid grid-cols-3 gap-4">
+                            <dt class="text-sm font-medium text-gray-500">Heure de début</dt>
+                            <dd class="mt-1 text-sm text-gray-900 col-span-2">{{ visite.heureDebut ? visite.heureDebut|date('H:i') : 'Non définie' }}</dd>
+                        </div>
+                        <div class="px-4 py-3 grid grid-cols-3 gap-4">
+                            <dt class="text-sm font-medium text-gray-500">Durée</dt>
+                            <dd class="mt-1 text-sm text-gray-900 col-span-2">{{ visite.duree ? visite.duree ~ ' heures' : 'Non définie' }}</dd>
+                        </div>
+                        <div class="px-4 py-3 grid grid-cols-3 gap-4">
+                            <dt class="text-sm font-medium text-gray-500">Heure de fin (estimée)</dt>
+                            <dd class="mt-1 text-sm text-gray-900 col-span-2">{{ visite.heureFin ? visite.heureFin|date('H:i') : 'Non calculée' }}</dd>
+                        </div>
+                         <div class="px-4 py-3 grid grid-cols-3 gap-4">
+                            <dt class="text-sm font-medium text-gray-500">Statut</dt>
+                            <dd class="mt-1 text-sm text-gray-900 col-span-2">
+                                {% set status_text = 'À définir' %}
+                                {% set status_class = 'bg-gray-100 text-gray-800' %}
+                                {% if visite.date %}
+                                    {% set visit_datetime = (visite.date|date('Y-m-d') ~ ' ' ~ visite.heureDebut|date('H:i:s'))|date('U') %}
+                                    {% if visit_datetime > "now"|date('U') %}
+                                        {% set status_text = 'À venir' %}
+                                        {% set status_class = 'bg-blue-100 text-blue-800' %}
+                                    {% else %}
+                                        {% set status_text = 'Terminée' %}
+                                        {% set status_class = 'bg-green-100 text-green-800' %}
+                                    {% endif %}
+                                {% endif %}
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium {{ status_class }}">{{ status_text }}</span>
+                            </dd>
+                        </div>
+                         <div class="px-4 py-3 grid grid-cols-3 gap-4">
+                            <dt class="text-sm font-medium text-gray-500">ID de la visite</dt>
+                            <dd class="mt-1 text-sm text-gray-900 col-span-2 text-gray-500">{{ visite.id }}</dd>
+                        </div>
+                    </dl>
+                    
+                    {% if visite.commentaireGeneral %}
+                    <div class="mt-6">
+                         <h3 class="font-semibold text-gray-700 mb-2">Commentaires & Notes</h3>
+                         <div class="prose prose-sm max-w-none p-4 bg-gray-50 border rounded-lg">
+                             {{ visite.commentaireGeneral|nl2br }}
+                         </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            {# Pied de page de la carte avec les boutons d'action #}
+            <div class="px-6 py-4 bg-gray-50 border-t flex items-center justify-end space-x-4">
+                {{ include('visite/_delete_form.html.twig', {
+                    'button_class': 'text-sm font-medium text-red-600 hover:text-red-800 transition-colors',
+                    'button_label': 'Supprimer'
+                }) }}
+                <a href="{{ path('app_visite_edit', {'id': visite.id}) }}" class="inline-flex items-center bg-brand-orange text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors shadow font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                      <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+                    </svg>
+                    Modifier
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
