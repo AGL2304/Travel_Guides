@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserForm; // Assurez-vous que le nom du formulaire est correct
+use App\Form\UserForm; 
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,10 +39,7 @@ final class UserController extends AbstractController
                 );
             }
             
-            // Ne pas définir le rôle ici si vous le gérez dans le formulaire
-            // Si le champ 'roles' du formulaire est vide, ceci sera écrasé.
-            // Il vaut mieux gérer une valeur par défaut dans l'entité User elle-même.
-            // $user->setRoles(['ROLE_USER']); 
+            
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -69,8 +66,8 @@ final class UserController extends AbstractController
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
-        // Pour l'édition, on ne passe PAS l'option. `is_new` sera `false` par défaut.
-        $form = $this->createForm(UserForm::class, $user); // <-- CORRECT (inchangé)
+        
+        $form = $this->createForm(UserForm::class, $user); 
 
         $form->handleRequest($request);
 
