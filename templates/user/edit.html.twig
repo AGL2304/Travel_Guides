@@ -1,13 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit User{% endblock %}
+{% block title %}Modifier l'Utilisateur{% endblock %}
 
 {% block body %}
-    <h1>Edit User</h1>
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-3xl mx-auto">
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+      
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">Modifier l'Utilisateur</h1>
+                <p class="text-gray-500 mt-1">Mettez à jour les informations de {{ user.firstname }} {{ user.name }}.</p>
+            </div>
+            <a href="{{ path('app_user_index') }}" class="inline-flex items-center bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors shadow-sm font-medium">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Retour à la liste
+            </a>
+        </div>
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
+       
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            
+            <div class="p-6 sm:p-8">
+               
+                {{ include('user/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+            </div>
 
-    {{ include('user/_delete_form.html.twig') }}
+           
+            <div class="bg-gray-50 px-6 sm:px-8 py-4 border-t border-gray-200">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900">Zone de Danger</h3>
+                        <p class="mt-1 text-sm text-gray-600">
+                            La suppression d'un utilisateur est une action définitive.
+                        </p>
+                    </div>
+                    <div class="ml-4">
+                       
+                        {{ include('user/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 {% endblock %}

@@ -1,4 +1,59 @@
+{# templates/visiteur/_form.html.twig #}
+
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+<!-- Ce div ajoute un espacement vertical automatique entre chaque champ -->
+<div class="space-y-6">
+
+    <!-- Champ Nom -->
+    <div>
+        {{ form_label(form.name, 'Nom', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+        {{ form_widget(form.name, {'attr': {
+            'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+            'placeholder': 'ex: Dupont'
+        }}) }}
+        {{ form_errors(form.name, {'attr': {'class': 'text-red-600 text-sm mt-1'}}) }}
+    </div>
+
+    <!-- Champ Prénom -->
+    <div>
+        {{ form_label(form.firstname, 'Prénom', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+        {{ form_widget(form.firstname, {'attr': {
+            'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+            'placeholder': 'ex: Jean'
+        }}) }}
+        {{ form_errors(form.firstname, {'attr': {'class': 'text-red-600 text-sm mt-1'}}) }}
+    </div>
+    
+    <!-- Champ Commentaire (textarea) -->
+    <div>
+        {{ form_label(form.commentaire, 'Commentaire', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+        {{ form_widget(form.commentaire, {'attr': {
+            'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+            'rows': 4,
+            'placeholder': 'Ajoutez un commentaire (optionnel)'
+        }}) }}
+        {{ form_errors(form.commentaire, {'attr': {'class': 'text-red-600 text-sm mt-1'}}) }}
+    </div>
+
+    <!-- Checkbox "Présent" avec alignement spécifique -->
+    <div class="relative flex items-start">
+        <div class="flex h-5 items-center">
+            {{ form_widget(form.present, {'attr': {'class': 'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'}}) }}
+        </div>
+        <div class="ml-3 text-sm">
+            {{ form_label(form.present, 'Présent sur le site', {'label_attr': {'class': 'font-medium text-gray-700'}}) }}
+        </div>
+        {{ form_errors(form.present, {'attr': {'class': 'text-red-600 text-sm'}}) }}
+    </div>
+
+</div>
+
+<!-- Bouton de soumission aligné à droite -->
+<div class="pt-8 flex justify-end">
+    <button class="inline-flex justify-center rounded-lg border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+        {{ button_label|default('Enregistrer') }}
+    </button>
+</div>
+
 {{ form_end(form) }}

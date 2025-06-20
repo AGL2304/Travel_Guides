@@ -1,118 +1,161 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Statistiques - GuideSmart{% endblock %}
+{% block title %}Tableau de Bord - GuideSmart{% endblock %}
 
 {% block body %}
-<div class="container mx-auto px-4 py-8">
+{# J'utilise min-h-screen et bg-gray-50 pour que le fond gris clair remplisse toute la page #}
+<div class="bg-gray-50 min-h-screen">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-    {# En-tête de la page #}
-    <div class="mb-8">
-        <h1 class="text-4xl font-bold gradient-text">
-            📊 Tableau de Bord
-        </h1>
-        <p class="text-gray-500 mt-1">Aperçu de l'activité de votre agence.</p>
+    {# --- En-tête de page amélioré --- #}
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+        <div class="flex items-center space-x-4">
+            {# Icône plus professionnelle et intégrée #}
+            <div class="bg-blue-600/10 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">
+                    Tableau de Bord
+                </h1>
+                <p class="text-gray-500 mt-1">Aperçu de l'activité de votre agence.</p>
+            </div>
+        </div>
+        {# Placeholder pour un sélecteur de date, très commun sur les dashboards #}
+        <div class="flex items-center space-x-2 bg-white p-2 rounded-lg shadow-sm border">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            <span class="text-sm font-medium text-gray-600">30 derniers jours</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+        </div>
     </div>
 
-    {# Section des indicateurs clés (KPIs) - Supposition de variables passées depuis le contrôleur #}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {# Carte 1: Total des guides #}
-        <div class="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
-            <div class="bg-green-100 p-3 rounded-full">
-                <svg class="h-6 w-6 text-brand-green" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.653-.125-1.274-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.653.125-1.274.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-            </div>
+    {# --- Section des indicateurs clés (KPIs) avec plus d'impact --- #}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        {# Utilisation de couleurs plus variées et d'effets de survol #}
+        {% set kpi_class = 'bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center space-x-4' %}
+        
+        <div class="{{ kpi_class }}">
+            <div class="bg-green-100 p-4 rounded-full"><svg class="h-7 w-7 text-green-600" ...></svg></div>
             <div>
                 <p class="text-sm text-gray-500">Guides Actifs</p>
-                <p class="text-2xl font-bold text-gray-800">{{ totalGuides|default('N/A') }}</p>
+                <p class="text-3xl font-bold text-gray-800">{{ totalGuides|default('0') }}</p>
             </div>
         </div>
-        {# Carte 2: Total des visites #}
-        <div class="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
-            <div class="bg-orange-100 p-3 rounded-full">
-                <svg class="h-6 w-6 text-brand-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l6-3m-6 3V7m0 0l6 3" /></svg>
-            </div>
+        <div class="{{ kpi_class }}">
+            <div class="bg-blue-100 p-4 rounded-full"><svg class="h-7 w-7 text-blue-600" ...></svg></div>
             <div>
                 <p class="text-sm text-gray-500">Visites Planifiées</p>
-                <p class="text-2xl font-bold text-gray-800">{{ totalVisites|default('N/A') }}</p>
+                <p class="text-3xl font-bold text-gray-800">{{ totalVisites|default('0') }}</p>
             </div>
         </div>
-        {# Vous pouvez ajouter d'autres KPIs ici #}
+        <div class="{{ kpi_class }}">
+            <div class="bg-orange-100 p-4 rounded-full"><svg class="h-7 w-7 text-orange-600" ...></svg></div>
+            <div>
+                <p class="text-sm text-gray-500">Taux Présence Global</p>
+                <p class="text-3xl font-bold text-gray-800">{{ (globalPresenceRate * 100)|number_format(1)|default('N/A') }}%</p>
+            </div>
+        </div>
+        <div class="{{ kpi_class }}">
+            <div class="bg-purple-100 p-4 rounded-full"><svg class="h-7 w-7 text-purple-600" ...></svg></div>
+            <div>
+                <p class="text-sm text-gray-500">Visites ce mois-ci</p>
+                <p class="text-3xl font-bold text-gray-800">{{ visitesMoisActuel|default('0') }}</p>
+            </div>
+        </div>
     </div>
 
 
-    {# Grille principale pour les graphiques et listes #}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    {# --- Grille principale avec une meilleure hiérarchie (un élément principal, un secondaire) --- #}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
     
-        {# Carte 1: Visites par mois (Graphique à barres simulé) #}
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Nombre de visites par mois</h3>
+        {# Carte principale : Graphique à barres (2/3 de la largeur) #}
+        <div class="bg-white p-6 rounded-xl shadow-lg lg:col-span-2">
+            <h3 class="text-xl font-semibold text-gray-800 mb-1">Activité des visites</h3>
+            <p class="text-sm text-gray-500 mb-6">Nombre de visites mensuelles sur les 6 derniers mois.</p>
             <div class="space-y-4">
-                {# Pour un vrai graphique, intégrer une bibliothèque JS comme Chart.js ou ApexCharts ici #}
                 {% for stat in visitesParMois %}
-                    <div class="flex items-center">
-                        <span class="w-24 text-sm text-gray-600">{{ stat.mois }}</span>
-                        <div class="flex-1 bg-gray-200 rounded-full h-6">
-                            {# La largeur est calculée en % par rapport au mois avec le plus de visites #}
-                            {# Vous devez passer maxVisitesMois depuis votre contrôleur #}
-                            <div class="bg-brand-green h-6 rounded-full text-white text-xs flex items-center justify-end pr-2" 
-                                 style="width: {{ maxVisitesMois > 0 ? (stat.total / maxVisitesMois * 100)|round : 0 }}%">
-                                {{ stat.total }}
+                    <div class="flex items-center group">
+                        <span class="w-24 text-sm font-medium text-gray-600">{{ stat.mois }}</span>
+                        <div class="flex-1 bg-gray-100 rounded-full h-8">
+                            {# Barre avec gradient et transition pour un look plus moderne #}
+                            <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-8 rounded-full text-white text-xs flex items-center justify-end pr-2 transition-all duration-500 ease-out group-hover:from-blue-500 group-hover:to-blue-700"
+                                 style="width: {{ maxVisitesMois > 0 ? (stat.total / maxVisitesMois * 100)|round : 0 }}%; min-width: 28px;">
+                                <span class="font-bold">{{ stat.total }}</span>
                             </div>
                         </div>
                     </div>
                 {% else %}
-                    <p class="text-gray-500 italic">Aucune donnée de visite disponible.</p>
+                    <p class="text-center py-8 text-gray-500 italic">Aucune donnée de visite disponible pour créer le graphique.</p>
                 {% endfor %}
             </div>
         </div>
 
-        {# Carte 2: Taux de présence (Barres de progression) #}
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Taux de présence des touristes par mois</h3>
-            <div class="space-y-4">
+        {# Carte secondaire: Taux de présence (1/3 de la largeur) #}
+        <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h3 class="text-xl font-semibold text-gray-800 mb-1">Taux de présence</h3>
+            <p class="text-sm text-gray-500 mb-6">Engagement mensuel des touristes.</p>
+            <div class="space-y-5">
                 {% for stat in tauxPresence %}
                     <div>
                         <div class="flex justify-between mb-1">
                             <span class="text-sm font-medium text-gray-700">{{ stat.mois }}</span>
-                            <span class="text-sm font-medium text-brand-orange">{{ (stat.taux * 100)|number_format(1) }}%</span>
+                            <span class="text-sm font-bold text-orange-600">{{ (stat.taux * 100)|number_format(1) }}%</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5">
-                            <div class="bg-brand-orange h-2.5 rounded-full" style="width: {{ stat.taux * 100 }}%"></div>
+                            <div class="bg-orange-500 h-2.5 rounded-full" style="width: {{ stat.taux * 100 }}%"></div>
                         </div>
                     </div>
                 {% else %}
-                    <p class="text-gray-500 italic">Aucune donnée de présence disponible.</p>
+                    <p class="text-center py-8 text-gray-500 italic">Aucune donnée de présence disponible.</p>
                 {% endfor %}
             </div>
         </div>
         
-        {# Carte 3: Visites par guide (Tableau) #}
-        <div class="bg-white p-6 rounded-lg shadow-md lg:col-span-2"> {# Prend toute la largeur sur grand écran #}
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Détail des visites par guide et par mois</h3>
+        {# Carte 3: Tableau des guides - Rendu plus "humain" avec des avatars #}
+        <div class="bg-white rounded-xl shadow-lg lg:col-span-3"> {# Prend toute la largeur #}
+            <div class="p-6">
+                <h3 class="text-xl font-semibold text-gray-800">Performance des Guides</h3>
+                <p class="text-sm text-gray-500 mt-1">Nombre de visites attribuées par guide et par mois.</p>
+            </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left text-gray-500">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50/50">
                         <tr>
-                            <th scope="col" class="px-6 py-3">Guide</th>
-                            <th scope="col" class="px-6 py-3">Mois</th>
-                            <th scope="col" class="px-6 py-3 text-right">Nombre de Visites</th>
+                            <th scope="col" class="px-6 py-4">Guide</th>
+                            <th scope="col" class="px-6 py-4">Mois</th>
+                            <th scope="col" class="px-6 py-4 text-center">Visites</th>
+                            <th scope="col" class="px-6 py-4 text-right">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                     {% for stat in visitesParGuide %}
-                        <tr class="bg-white border-b hover:bg-gray-50">
+                        <tr class="bg-white border-b last:border-b-0 hover:bg-gray-50 transition-colors">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                {{ stat.guide }}
+                                <div class="flex items-center space-x-3">
+                                    {# Avatar avec les initiales. Très efficace visuellement ! #}
+                                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold">
+                                        {{ stat.guide|slice(0, 1) }}
+                                    </div>
+                                    <span>{{ stat.guide }}</span>
+                                </div>
                             </th>
                             <td class="px-6 py-4">
                                 {{ stat.mois }}
                             </td>
-                            <td class="px-6 py-4 text-right font-bold text-brand-green">
-                                {{ stat.total }}
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-full">
+                                    {{ stat.total }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <a href="{{ path('app_guide_show', { id: stat.guide_id }) }}" class="font-medium text-blue-600 hover:underline">Voir profil</a>
                             </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="3" class="text-center py-6 text-gray-500 italic">
+                            <td colspan="4" class="text-center py-10 text-gray-500 italic">
                                 Aucune donnée détaillée par guide disponible.
                             </td>
                         </tr>
@@ -123,5 +166,6 @@
         </div>
 
     </div>
+</div>
 </div>
 {% endblock %}

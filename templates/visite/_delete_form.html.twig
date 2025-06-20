@@ -1,9 +1,4 @@
-{#
-    Ce formulaire de suppression est conçu pour être flexible.
-    Il accepte deux variables lors de l'inclusion :
-    - button_label: Le texte à afficher sur le bouton (ex: 'Supprimer ce guide').
-    - button_class: Les classes Tailwind CSS à appliquer au bouton.
-#}
+
 <form method="post" 
       action="{{ path('app_visite_delete', {'id': visite.id}) }}" 
       onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ? Cette action est irréversible.');" 
