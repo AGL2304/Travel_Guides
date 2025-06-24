@@ -1,12 +1,11 @@
-{# On présume que le formulaire par défaut de Symfony n'est pas stylisé avec Tailwind. #}
-{# Cette version utilise les classes Tailwind pour un rendu optimal. #}
+
 
 {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
 
-{# Un titre pour le formulaire, passé depuis new.html.twig #}
+
 <h2 class="text-xl font-semibold text-gray-700 border-b pb-3 mb-6">{{ form_title|default('Formulaire') }}</h2>
 
-{# Utilisation d'une grille pour mieux organiser les champs "Nom" et "Prénom" #}
+
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <div>
         {{ form_label(form.name, 'Nom', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
@@ -20,21 +19,21 @@
     </div>
 </div>
 
-{# Champs sur une seule colonne #}
+
 <div>
     {{ form_label(form.pays, 'Pays', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
     {{ form_widget(form.pays, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5'}}) }}
     {{ form_errors(form.pays) }}
 </div>
 
-{# Champ pour le statut (probablement un <select>) #}
+
 <div>
     {{ form_label(form.statut, 'Statut', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
     {{ form_widget(form.statut, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5'}}) }}
     {{ form_errors(form.statut) }}
 </div>
 
-{# Champ pour l'upload de photo #}
+
 <div>
     {{ form_label(form.photo, 'Photo de profil', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
     {{ form_widget(form.photo, {'attr': {'class': 'block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none'}}) }}
@@ -42,7 +41,7 @@
     {{ form_errors(form.photo) }}
 </div>
 
-{# Actions du formulaire (bouton de soumission et lien d'annulation/retour) #}
+
 <div class="flex items-center justify-end pt-4 border-t mt-6 space-x-4">
     <a href="{{ path('app_guide_index') }}" class="text-sm font-medium text-gray-600 hover:underline">
         Annuler

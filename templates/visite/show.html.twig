@@ -39,10 +39,27 @@
                     <div>
                         <h3 class="font-semibold text-gray-700 mb-2">Aperçu</h3>
                         {% if visite.photo %}
-                            <img src="{{ asset('uploads/visites/' ~ visite.photo) }}" alt="Photo de la visite" class="w-full h-auto rounded-lg object-cover shadow-sm">
+                            {% set photo_src = visite.photo starts with 'http' ? visite.photo : asset('uploads/visites/' ~ visite.photo) %}
+                            <img src="{{ photo_src }}" 
+                                 alt="Photo de la visite" 
+                                 class="w-full h-auto rounded-lg object-cover shadow-sm"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="w-full h-48 rounded-lg bg-gray-200 flex items-center justify-center" style="display: none;">
+                                <div class="text-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <span class="text-gray-500">Image indisponible</span>
+                                </div>
+                            </div>
                         {% else %}
                             <div class="w-full h-48 rounded-lg bg-gray-200 flex items-center justify-center">
-                                <span class="text-gray-500">Aucune photo</span>
+                                <div class="text-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <span class="text-gray-500">Aucune photo</span>
+                                </div>
                             </div>
                         {% endif %}
                     </div>
@@ -54,10 +71,16 @@
                         <a href="{{ path('app_guide_show', {'id': visite.guide.id}) }}" class="block p-4 bg-gray-50 rounded-lg border hover:bg-gray-100 hover:border-brand-green transition-all">
                             <div class="flex items-center space-x-4">
                                 {% if visite.guide.photo %}
-                                    <img src="{{ asset('uploads/photos/' ~ visite.guide.photo) }}" class="w-12 h-12 rounded-full object-cover">
+                                    {% set guide_photo_src = visite.guide.photo starts with 'http' ? visite.guide.photo : asset('uploads/photos/' ~ visite.guide.photo) %}
+                                    <img src="{{ guide_photo_src }}" 
+                                         class="w-12 h-12 rounded-full object-cover"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <span class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-brand-green text-white font-medium" style="display: none;">
+                                        {{ visite.guide.firstname|first|upper }}{{ visite.guide.name|first|upper }}
+                                    </span>
                                 {% else %}
-                                    <span class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-gray-300">
-                                        <span class="font-medium text-gray-600">{{ visite.guide.firstname|first|upper }}{{ visite.guide.name|first|upper }}</span>
+                                    <span class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-brand-green text-white font-medium">
+                                        {{ visite.guide.firstname|first|upper }}{{ visite.guide.name|first|upper }}
                                     </span>
                                 {% endif %}
                                 <div>

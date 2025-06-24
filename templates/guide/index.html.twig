@@ -23,7 +23,6 @@
         <table class="w-full text-sm text-left text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-100">
                 <tr>
-                    {# J'ai renommé les colonnes pour plus de clarté #}
                     <th scope="col" class="px-6 py-3">Photo</th>
                     <th scope="col" class="px-6 py-3">Nom Complet</th>
                     <th scope="col" class="px-6 py-3">Statut</th>
@@ -36,13 +35,31 @@
             {% for guide in guides %}
                 <tr class="bg-white border-b hover:bg-gray-50 transition-colors">
                     <td class="px-6 py-4">
-                        {# Affiche une image si une photo est définie, sinon un avatar par défaut #}
+                        {# URL externe avec fallback vers avatar d'initiales #}
                         {% if guide.photo %}
-                            <img src="{{ asset('uploads/photos/' ~ guide.photo) }}" alt="Photo de {{ guide.firstname }}" class="w-12 h-12 rounded-full object-cover">
+                            {# Génération de l'avatar de fallback avec couleur basée sur l'ID #}
+                            {% set colors = ['from-blue-400 to-blue-600', 'from-green-400 to-green-600', 'from-purple-400 to-purple-600', 'from-pink-400 to-pink-600', 'from-yellow-400 to-yellow-600', 'from-red-400 to-red-600', 'from-indigo-400 to-indigo-600', 'from-teal-400 to-teal-600'] %}
+                            {% set color_index = (guide.id % 8) %}
+                            
+                            <div class="relative">
+                                <img src="{{ guide.photo }}" 
+                                     alt="Photo de {{ guide.firstname }} {{ guide.name }}" 
+                                     class="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
+                                     onload="this.style.display='block'; this.nextElementSibling.style.display='none';"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                     style="display: block;">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br {{ colors[color_index] }} items-center justify-center text-white font-bold text-lg shadow-md border-2 border-gray-200" 
+                                     style="display: none;">
+                                    {{ guide.firstname|first|upper }}{{ guide.name|first|upper }}
+                                </div>
+                            </div>
                         {% else %}
-                            <span class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-gray-200">
-                                <span class="text-lg font-medium text-gray-600">{{ guide.firstname|first|upper }}{{ guide.name|first|upper }}</span>
-                            </span>
+                            {# Avatar par défaut avec initiales et couleur dynamique #}
+                            {% set colors = ['from-blue-400 to-blue-600', 'from-green-400 to-green-600', 'from-purple-400 to-purple-600', 'from-pink-400 to-pink-600', 'from-yellow-400 to-yellow-600', 'from-red-400 to-red-600', 'from-indigo-400 to-indigo-600', 'from-teal-400 to-teal-600'] %}
+                            {% set color_index = (guide.id % 8) %}
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br {{ colors[color_index] }} flex items-center justify-center text-white font-bold text-lg shadow-md border-2 border-gray-200">
+                                {{ guide.firstname|first|upper }}{{ guide.name|first|upper }}
+                            </div>
                         {% endif %}
                     </td>
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
@@ -50,7 +67,7 @@
                         <div class="text-xs text-gray-400">ID: {{ guide.id }}</div>
                     </th>
                     <td class="px-6 py-4">
-                        {# Affichage du statut sous forme de badge coloré pour une meilleure lisibilité #}
+                        {# Affichage du statut sous forme de badge coloré #}
                         {% set status_class = guide.statut == 'Actif' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' %}
                         <span class="px-2.5 py-0.5 rounded-full text-xs font-medium {{ status_class }}">
                             {{ guide.statut }}
@@ -59,10 +76,15 @@
                     <td class="px-6 py-4">
                         {{ guide.pays }}
                     </td>
-                    <td class="px-6 py-4 text-center">
-                        {# "OneToMany" est un nom technique. On affiche plutôt un compte. #}
-                        {# S'il s'agit d'une collection de visites, on peut afficher son nombre. #}
-                        <span class="font-bold text-lg text-brand-orange">{{ guide.oneToMany|length }}</span>
+                    <td class="px-6 py-4">
+                        {# Nombre de visites assignées #}
+                        <span class="text-gray-600 font-medium">
+                            {% if guide.visites is defined and guide.visites %}
+                                {{ guide.visites|length }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </span>
                     </td>
                     <td class="px-6 py-4 text-right">
                         <a href="{{ path('app_guide_show', {'id': guide.id}) }}" class="font-medium text-brand-green hover:underline mr-4">Voir</a>
@@ -72,10 +94,19 @@
             {% else %}
                 <tr>
                     <td colspan="6" class="text-center text-gray-500 py-10">
-                        <p class="mb-2">Aucun guide n'a été trouvé.</p>
-                        <a href="{{ path('app_guide_new') }}" class="font-medium text-brand-green hover:underline">
-                            Cliquez ici pour en créer un premier !
-                        </a>
+                        <div class="flex flex-col items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            <p class="text-lg font-medium text-gray-700 mb-2">Aucun guide n'a été trouvé.</p>
+                            <p class="text-gray-500 mb-4">Commencez par ajouter votre premier guide à la plateforme.</p>
+                            <a href="{{ path('app_guide_new') }}" class="inline-flex items-center bg-brand-green text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors shadow font-medium">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                                </svg>
+                                Créer le premier guide
+                            </a>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}
